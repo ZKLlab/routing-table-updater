@@ -155,10 +155,11 @@ namespace RoutingTableUpdater
                 .ToList()
                 .ForEach(rtr =>
                 {
-                    if (DeleteIpForwardEntry(ref rtr) == 0x00)
+                    var result = DeleteIpForwardEntry(ref rtr);
+                    if (result == 0x00)
                         Console.WriteLine($"Successfully deleted a routing rule: {ToIpString(rtr.dwForwardDest)} MASK {ToIpString(rtr.dwForwardMask)} {ToIpString(rtr.dwForwardNextHop)}");
                     else
-                        Console.WriteLine($"Unable to remove a routing rule: {ToIpString(rtr.dwForwardDest)} MASK {ToIpString(rtr.dwForwardMask)} {ToIpString(rtr.dwForwardNextHop)}");
+                        Console.WriteLine($"Unable to remove a routing rule ({result}): {ToIpString(rtr.dwForwardDest)} MASK {ToIpString(rtr.dwForwardMask)} {ToIpString(rtr.dwForwardNextHop)}");
                 });
             routingRules
                 .Select(rr => new MIB_IPFORWARDROW
@@ -177,7 +178,7 @@ namespace RoutingTableUpdater
                     if (result == 0x00)
                         Console.WriteLine($"Successfully created a routing rule: {ToIpString(rtr.dwForwardDest)} MASK {ToIpString(rtr.dwForwardMask)} {ToIpString(rtr.dwForwardNextHop)}");
                     else
-                        Console.WriteLine($"Unable to create a routing rule {result}: {ToIpString(rtr.dwForwardDest)} MASK {ToIpString(rtr.dwForwardMask)} {ToIpString(rtr.dwForwardNextHop)}");
+                        Console.WriteLine($"Unable to create a routing rule ({result}): {ToIpString(rtr.dwForwardDest)} MASK {ToIpString(rtr.dwForwardMask)} {ToIpString(rtr.dwForwardNextHop)}");
                 });
         }
     }
